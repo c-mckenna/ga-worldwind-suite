@@ -37,6 +37,7 @@ import au.gov.ga.worldwind.common.layers.mercator.delegate.DelegatorMercatorTile
 import au.gov.ga.worldwind.common.layers.model.ModelLayerFactory;
 import au.gov.ga.worldwind.common.layers.point.PointLayerFactory;
 import au.gov.ga.worldwind.common.layers.shapefile.surfaceshape.ShapefileLayerFactory;
+import au.gov.ga.worldwind.common.layers.temporal.TemporalTiledImageLayer;
 import au.gov.ga.worldwind.common.layers.tiled.image.delegate.DelegatorTiledImageLayer;
 import au.gov.ga.worldwind.common.layers.volume.VolumeLayerFactory;
 import au.gov.ga.worldwind.common.util.XMLUtil;
@@ -99,6 +100,10 @@ public class LayerFactory extends BasicLayerFactory
 		{
 			return VolumeLayerFactory.createVolumeLayer(domElement, params);
 		}
+		if ("TemporalTiledImageLayer".equalsIgnoreCase(layerType))
+		{
+			return new TemporalTiledImageLayer(domElement, params);
+		}
 
 		return super.createFromLayerDocument(domElement, params);
 	}
@@ -125,7 +130,7 @@ public class LayerFactory extends BasicLayerFactory
 
 		return layer;
 	}
-	
+
 	protected Layer createTiledMercatorLayer(Element domElement, AVList params)
 	{
 		if (params == null)

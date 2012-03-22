@@ -124,7 +124,7 @@ public class DelegatorTiledImageLayer extends URLTransformerBasicTiledImageLayer
 		this(getParamsFromDocument(domElement, params));
 	}
 
-	protected static AVList getParamsFromDocument(Element domElement, AVList params)
+	public static AVList getParamsFromDocument(Element domElement, AVList params)
 	{
 		String serviceName = XMLUtil.getText(domElement, "Service/@serviceName");
 
@@ -164,7 +164,7 @@ public class DelegatorTiledImageLayer extends URLTransformerBasicTiledImageLayer
 	 * 
 	 * @author Michael de Hoog
 	 */
-	protected static class WMSTIL extends WMSTiledImageLayer
+	public static class WMSTIL extends WMSTiledImageLayer
 	{
 		private WMSTIL()
 		{
@@ -314,6 +314,7 @@ public class DelegatorTiledImageLayer extends URLTransformerBasicTiledImageLayer
 		tile.setTextureData(textureData);
 		if (tile.getLevelNumber() != 0 || !isRetainLevelZeroTiles())
 		{
+			//cast to select correct method
 			addTileToCache((IDelegatorTile) tile);
 		}
 
