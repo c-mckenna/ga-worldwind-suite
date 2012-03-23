@@ -20,6 +20,7 @@ import gov.nasa.worldwind.layers.ScalebarLayer;
 
 import javax.swing.Icon;
 
+import au.gov.ga.worldwind.common.layers.CenterableScalebarLayer;
 import au.gov.ga.worldwind.common.util.Icons;
 import au.gov.ga.worldwind.viewer.theme.AbstractThemeHUD;
 import au.gov.ga.worldwind.viewer.theme.ThemeHUD;
@@ -36,7 +37,7 @@ public class ScalebarHUD extends AbstractThemeHUD
 	@Override
 	protected Layer createLayer()
 	{
-		layer = new ScalebarLayer();
+		layer = new CenterableScalebarLayer();
 		return layer;
 	}
 
