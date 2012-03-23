@@ -37,4 +37,16 @@ public interface TemporalLayer extends Layer
 	 * @param date
 	 */
 	void setDate(BigDate date);
+
+	/**
+	 * @return Collection of dates at which this temporal layer has data.
+	 */
+	Iterable<BigDate> dataDates();
+
+	/**
+	 * @param date
+	 * @return Label of this layer for the given date. Returns null if there's
+	 *         no label at the given date.
+	 */
+	String labelAtDate(BigDate date);
 }

@@ -192,6 +192,35 @@ public class TemporalTiledImageLayer extends AbstractLayer implements TemporalLa
 	}
 
 	@Override
+	public Iterable<BigDate> dataDates()
+	{
+		return layers.keySet();
+	}
+
+	@Override
+	public String labelAtDate(BigDate date)
+	{
+		BigDate floorKey = layers.floorKey(date);
+		BigDate ceilingKey = layers.ceilingKey(date);
+		if (floorKey == null && ceilingKey == null)
+			return null;
+
+		Layer layer = null;
+		if (floorKey == null || ceilingKey == null || floorKey.seconds == ceilingKey.seconds)
+		{
+			layer = floorKey != null ? layers.get(floorKey) : layers.get(ceilingKey);
+		}
+		else
+		{
+			long floorDelta = date.seconds - floorKey.seconds;
+			long ceilingDelta = ceilingKey.seconds - date.seconds;
+			layer = floorDelta < ceilingDelta ? layers.get(floorKey) : layers.get(ceilingKey);
+		}
+
+		return layer.getName();
+	}
+
+	@Override
 	protected void doRender(DrawContext dc)
 	{
 		renderOrPick(dc, false, null);
