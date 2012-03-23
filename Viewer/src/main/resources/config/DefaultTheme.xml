@@ -13,10 +13,11 @@
 	<!--<InitialPitch></InitialPitch>-->
 
 	<!-- Heads-up-display elements (can also include special layers) -->
-	<HUD name="World Map" className="au.gov.ga.worldwind.viewer.theme.hud.WorldMapHUD" position="NorthWest" />
+	<HUD name="World Map" className="au.gov.ga.worldwind.viewer.theme.hud.WorldMapHUD" position="SouthEast" />
 	<HUD name="Compass" className="au.gov.ga.worldwind.viewer.theme.hud.CompassHUD" position="NorthEast" />
-	<HUD name="Scalebar" className="au.gov.ga.worldwind.viewer.theme.hud.ScalebarHUD" position="SouthEast" />
+	<HUD name="Time Slider" className="au.gov.ga.worldwind.viewer.theme.hud.TimeSliderHUD" position="NorthWest" />
 	<HUD name="Navigation Controls" className="au.gov.ga.worldwind.viewer.theme.hud.ControlsHUD" position="SouthWest" />
+	<HUD name="Scalebar" className="au.gov.ga.worldwind.viewer.theme.hud.ScalebarHUD" position="Center" enabled="false" />
 	<HUD name="Graticule" className="au.gov.ga.worldwind.viewer.theme.hud.GraticuleHUD" enabled="false" />
 	<HUD name="Crosshair" className="au.gov.ga.worldwind.viewer.theme.hud.CrosshairHUD" enabled="false" />
 

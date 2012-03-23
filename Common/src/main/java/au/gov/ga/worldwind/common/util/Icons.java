@@ -35,6 +35,7 @@ public class Icons
 	public static final Icons check = new Icons("check.gif");
 	public static final Icons checkall = new Icons("checkall.gif");
 	public static final Icons checkboxes = new Icons("checkboxes.gif");
+	public static final Icons clock = new Icons("clock.gif");
 	public static final Icons collapse = new Icons("collapse.gif");
 	public static final Icons collapseall = new Icons("collapseall.gif");
 	public static final Icons compass = new Icons("compass.gif");
