@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 import javax.media.opengl.GL;
 
 import au.gov.ga.worldwind.common.render.ExtendedDrawContext;
-import au.gov.ga.worldwind.common.render.ExtendedSceneController;
+import au.gov.ga.worldwind.common.render.oit.WeightedAverageSceneController;
 import au.gov.ga.worldwind.common.util.SectorClipPlanes;
 import au.gov.ga.worldwind.common.view.stereo.StereoView;
 import au.gov.ga.worldwind.common.view.stereo.StereoView.Eye;
@@ -44,7 +44,7 @@ import com.sun.opengl.util.BufferUtil;
  * 
  * @author Michael de Hoog (michael.dehoog@ga.gov.au)
  */
-public class StereoSceneController extends ExtendedSceneController
+public class StereoSceneController extends WeightedAverageSceneController
 {
 	private double lastVerticalExaggeration = -1;
 	private double lastFieldOfView = -1;

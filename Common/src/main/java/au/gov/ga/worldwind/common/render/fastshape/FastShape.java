@@ -352,6 +352,9 @@ public class FastShape implements OrderedRenderable, Cacheable, Bounded, Wirefra
 			stack.pushClientAttrib(gl, GL.GL_CLIENT_VERTEX_ARRAY_BIT);
 			Vec4 referenceCenter = boundingSphere.getCenter();
 			dc.getView().pushReferenceCenter(dc, referenceCenter);
+			
+			gl.glDisable(GL.GL_DEPTH);
+			gl.glDepthMask(false);
 
 			if (lineWidth != null)
 			{
