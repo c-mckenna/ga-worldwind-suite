@@ -116,7 +116,7 @@ public class TemporalTiledImageLayer extends AbstractLayer implements TemporalLa
 		int min = (int) (layers.firstKey().numberOfYearsAgo() / -1e6);
 		int max = (int) (layers.lastKey().numberOfYearsAgo() / -1e6);
 		JFrame frame = new JFrame(getName() + " time slider");
-		final JSlider slider = new JSlider(min, max, 0);
+		final JSlider slider = new JSlider(min, max, min);
 		frame.add(slider);
 		frame.pack();
 		frame.setVisible(true);
