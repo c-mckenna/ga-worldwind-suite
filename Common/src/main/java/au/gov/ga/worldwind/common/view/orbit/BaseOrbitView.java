@@ -86,7 +86,7 @@ public class BaseOrbitView extends AbstractView implements OrbitView
 		return viewLimits;
 	}
 
-	protected void loadConfigurationValues()
+	public void loadConfigurationValues()
 	{
 		Position center = getCenterPosition();
 		Double initLat = Configuration.getDoubleValue(AVKey.INITIAL_LATITUDE);
