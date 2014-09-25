@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Layer layerType="TiledImageLayer" version="1">
+	<DisplayName>worldwaterbodies</DisplayName>
+	<Legend></Legend>
+	<Service serviceName="DelegatorTileService">
+	</Service>
+	<Delegates>
+		<Delegate>LocalRequester</Delegate>
+		<Delegate>Shader</Delegate>
+    </Delegates>
+	<LastUpdate>1326063312400</LastUpdate>
+    <DatasetName>worldwaterbodies</DatasetName>
+    <DataCacheName>worldwaterbodies</DataCacheName>
+	<ImageFormat>image/png</ImageFormat>
+	<AvailableImageFormats>
+        <ImageFormat>image/png</ImageFormat>
+    </AvailableImageFormats>
+    <FormatSuffix>.png</FormatSuffix>
+    <NumLevels count="6" numEmpty="0"/>
+    <Sector>
+        <SouthWest>
+            <LatLon latitude="-90" longitude="-180" units="degrees"/>
+        </SouthWest>
+        <NorthEast>
+            <LatLon latitude="90" longitude="180" units="degrees"/>
+        </NorthEast>
+    </Sector>
+    <TileOrigin>
+        <LatLon latitude="-90.0" longitude="-180.0" units="degrees"/>
+    </TileOrigin>
+    <TileSize>
+        <Dimension height="512" width="512"/>
+    </TileSize>
+    <LevelZeroTileDelta>
+        <LatLon latitude="36.0" longitude="36.0" units="degrees"/>
+    </LevelZeroTileDelta>
+    <TextureFormat>image/dds</TextureFormat>
+    <ForceLevelZeroLoads>false</ForceLevelZeroLoads>
+    <RetainLevelZeroTiles>true</RetainLevelZeroTiles>
+    <UseMipMaps>true</UseMipMaps>
+    <UseTransparentTextures>true</UseTransparentTextures>
+	<Shaders>
+		<VertexShader>
+<![CDATA[
+uniform vec3 lightDirection;
+uniform vec3 eyePosition;
+uniform mat4 modelViewMatrixInverse;
+
+varying vec3 position;
+
+void main(void)
+{
+	//calculate reference center using the old (untranslated) modelview matrix
+	vec3 refCenter = (modelViewMatrixInverse * gl_ModelViewMatrix)[3].xyz;
+	position = gl_Vertex.xyz + refCenter;
+	
+	gl_Position = ftransform();
+	gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
+	gl_TexCoord[1] = gl_TextureMatrix[0] * gl_MultiTexCoord1;
+	
+	gl_FrontColor = gl_Color;
+}
+]]>
+		</VertexShader>
+		<FragmentShader>
+<![CDATA[
+uniform sampler2D tex0;
+uniform sampler2D tex1;
+
+uniform vec3 lightDirection;
+uniform vec3 eyePosition;
+
+varying vec3 position;
+
+void main (void)
+{
+	vec4 alpha = texture2D(tex1, gl_TexCoord[1].st);
+	if(alpha.a < 1.0) discard;
+	
+	float specularPower = 0.0;
+	float shininess = 100.0;
+	
+	vec3 cameraVector = normalize(eyePosition - position);
+	vec3 halfVector = normalize(lightDirection + cameraVector);
+	vec3 normal = normalize(position);
+	float nxHalf = max(0.0, dot(normal, halfVector));
+	specularPower = pow(nxHalf, shininess);
+	
+	vec4 tile = texture2D(tex0, gl_TexCoord[0].st);
+	gl_FragColor = tile * gl_Color * specularPower;
+}
+]]>
+		</FragmentShader>
+	</Shaders>
+</Layer>

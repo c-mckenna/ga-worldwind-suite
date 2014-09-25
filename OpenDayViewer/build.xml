@@ -1,0 +1,146 @@
+<?xml version="1.0" ?>
+
+<project name="OpenDay" basedir="." default="run">
+
+	<property name="perform_unit_tests" value="true" />
+	<property name="javac_debug" value="false" />
+
+	<property name="application_name" value="Open Day Viewer" />
+
+	<property name="src_dir" value="${basedir}/src" />
+
+	<property name="target_dir" value="${basedir}/target" />
+	<property name="build_dir" value="${target_dir}/classes" />
+	<property name="package_dir" value="${target_dir}/package" />
+	<property name="jar_name" value="openday.jar" />
+
+	<property name="executable_dir" value="${target_dir}/executable" />
+	<property name="executable_jar_name" value="openday-all-in-one.jar" />
+	<property name="executable_batch_name" value="run.bat" />
+
+	<property name="common_dir" value="${basedir}/../Common" />
+	<property name="common_lib_dir" value="${common_dir}/lib" />
+	<property name="common_package_lib_dir" value="${common_lib_dir}/package" />
+	<property name="common_include_lib_dir" value="${common_lib_dir}/include" />
+
+	<property name="common_build_script" value="${common_dir}/build.xml" />
+	<property name="common_package_dir" value="${common_dir}/target/package" />
+	<property name="common_jar_name" value="common.jar" />
+
+	<path id="classpath">
+		<fileset dir="${common_package_lib_dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${common_include_lib_dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${common_package_dir}/${common_jar_name}" />
+	</path>
+
+	<patternset id="manifest_exclude">
+		<exclude name="META-INF/**" />
+	</patternset>
+
+	<target name="clean">
+		<delete dir="${target_dir}" />
+	</target>
+
+	<target name="package-common">
+		<ant antfile="${common_build_script}" target="run" dir="${common_dir}" inheritall="false">
+			<property name="javac_debug" value="${javac_debug}" />
+			<property name="perform_unit_tests" value="${perform_unit_tests}" />
+			<property name="user.dir" value="${common_dir}" />
+		</ant>
+	</target>
+
+	<target name="build" depends="package-common">
+		<mkdir dir="${build_dir}" />
+		<!-- <copy todir="${build_dir}">
+			<fileset dir="${resources_dir}" />
+		</copy> -->
+		<copy todir="${build_dir}">
+			<fileset dir="${src_dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+		<javac source="1.6" target="1.6" destdir="${build_dir}" classpathref="classpath" listfiles="no" fork="true" debug="${javac_debug}" includeantruntime="no">
+			<src path="${src_dir}" />
+		</javac>
+	</target>
+
+	<target name="package" depends="build">
+		<mkdir dir="${package_dir}" />
+		<jar destfile="${package_dir}/${jar_name}">
+			<manifest>
+				<attribute name="Main-Class" value="au.gov.ga.worldwind.openday.Viewer" />
+				<attribute name="Application-Name" value="${application_name}" />
+				<attribute name="Codebase" value="*" />
+				<attribute name="Permissions" value="all-permissions" />
+			</manifest>
+			<fileset dir="${build_dir}" />
+		</jar>
+	</target>
+
+	<target name="unzip_package_natives">
+		<unzip dest="${executable_temp_dir}">
+			<fileset dir="${common_include_lib_dir}">
+				<include name="**/*natives*${osarch}*.jar" />
+			</fileset>
+			<patternset refid="manifest_exclude" />
+			<globmapper from="*" to="native/${osarch}/*" />
+		</unzip>
+	</target>
+
+	<target name="executable" depends="package">
+		<mkdir dir="${executable_dir}" />
+
+		<property name="executable_temp_dir" value="${executable_dir}/temp" />
+		<mkdir dir="${executable_temp_dir}" />
+		<antcall target="unzip_package_natives">
+			<param name="osarch" value="linux-amd64" />
+		</antcall>
+		<antcall target="unzip_package_natives">
+			<param name="osarch" value="linux-i586" />
+		</antcall>
+		<antcall target="unzip_package_natives">
+			<param name="osarch" value="macosx-universal" />
+		</antcall>
+		<antcall target="unzip_package_natives">
+			<param name="osarch" value="windows-amd64" />
+		</antcall>
+		<antcall target="unzip_package_natives">
+			<param name="osarch" value="windows-i586" />
+		</antcall>
+
+		<jar destfile="${executable_dir}/${executable_jar_name}">
+			<fileset dir="${build_dir}" />
+
+			<zipgroupfileset dir="${common_package_dir}">
+				<include name="${common_jar_name}" />
+			</zipgroupfileset>
+
+			<zipgroupfileset dir="${common_package_lib_dir}">
+				<include name="**/*.jar" />
+			</zipgroupfileset>
+			<zipgroupfileset dir="${common_include_lib_dir}">
+				<include name="**/*.jar" />
+				<exclude name="**/*natives*.jar" />
+			</zipgroupfileset>
+			<fileset dir="${common_package_lib_dir}" excludes="**/*.jar" />
+
+			<fileset dir="${executable_temp_dir}" />
+
+			<manifest>
+				<attribute name="Main-Class" value="au.gov.ga.worldwind.openday.Executable" />
+				<attribute name="SplashScreen-Image" value="images/viewer-splash-400x230.png" />
+			</manifest>
+		</jar>
+
+		<delete dir="${executable_temp_dir}" />
+
+		<echo file="${executable_dir}/${executable_batch_name}">java -Xmx1024m -jar ./${executable_jar_name}</echo>
+	</target>
+
+	<target name="run" depends="executable" />
+
+</project>

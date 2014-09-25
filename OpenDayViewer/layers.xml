@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorldWindConfiguration version="1">
+	<LayerList>
+		<!-- layers that are always on -->
+		<Layer href="layers/infinitestars.xml" actuate="onLoad" />
+		<Layer href="layers/atmosphere_sky.xml" actuate="onLoad" />
+		
+		<!-- Blue Marble -->
+		<Layer className="gov.nasa.worldwind.layers.Earth.BMNGOneImage">
+			<Property name="MinActiveAltitude" value="3e6" />
+			<Property name="Enabled" value="true" />
+		</Layer>
+		<Layer href="config/Earth/BMNGWMSLayer2.xml">
+			<Property name="Enabled" value="true" />
+		</Layer>
+		<Layer className="gov.nasa.worldwind.layers.Earth.NASAWFSPlaceNameLayer">
+			<Property name="Enabled" value="true" />
+		</Layer>
+		
+		<!-- NASA Landsat -->
+		<Layer href="config/Earth/LandsatI3WMSLayer2.xml">
+			<Property name="Group" value="0" />
+			<Property name="Enabled" value="true" />
+		</Layer>
+		
+		<!-- Bing/VirtualEarth -->
+		<Layer className="au.gov.ga.worldwind.openday.BingLayer">
+			<Property name="Group" value="1" />
+			<Property name="Enabled" value="false" />
+		</Layer>
+		
+		<!-- Open Street Map -->
+		<Layer className="au.gov.ga.worldwind.openday.OpenStreetMapLayer">
+			<Property name="Group" value="2" />
+			<Property name="Enabled" value="false" />
+		</Layer>
+		
+		<!-- light effect layers that only work with Landsat-type imagery -->
+		<Layer href="layers/nightlights.xml">
+			<Property name="Opacity" value="0.8" />
+			<Property name="Group" value="0,1" />
+			<Property name="Enabled" value="true" />
+		</Layer>
+		<!-- <Layer href="layers/clouds_with_light.xml" actuate="onLoad">
+			<Property name="Opacity" value="0.5" />
+			<Property name="Group" value="0,1" />
+			<Property name="Enabled" value="true" />
+		</Layer> -->
+		<Layer href="layers/worldwaterbodies_sun.xml">
+			<Property name="Group" value="0,1" />
+			<Property name="Enabled" value="true" />
+		</Layer>
+		<Layer href="layers/atmosphere_ground.xml">
+			<Property name="Group" value="0,1" />
+			<Property name="Enabled" value="true" />
+		</Layer>
+		<Layer href="layers/sun.xml">
+			<Property name="Group" value="0,1" />
+			<Property name="Enabled" value="true" />
+		</Layer>
+		
+		<!-- <Layer className="au.gov.ga.worldwind.openday.TimeLayer" /> -->
+	</LayerList>
+</WorldWindConfiguration>
