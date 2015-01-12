@@ -50,6 +50,7 @@ public class AnimationMessageConstants extends CommonMessageConstants
 	public static String getScaleHeightMenuLabelKey() { return "animator.gui.menu.scaleheight.label"; }
 	public static String getSmoothEyeSpeedMenuLabelKey() { return "animator.gui.menu.smootheyespeed.label"; }
 	public static String getShowWireframeMenuLabelKey() { return "animator.gui.menu.showwireframe.label"; }
+	public static String getTargetModeMenuLabelKey() { return "animator.gui.menu.targetmode.label"; }
 	public static String getPreviewMenuLabelKey() { return "animator.gui.menu.preview.label"; }
 	public static String getPreviewX2MenuLabelKey() { return "animator.gui.menu.previewx2.label"; }
 	public static String getPreviewX10MenuLabelKey() { return "animator.gui.menu.previewx10.label"; }
@@ -70,6 +71,7 @@ public class AnimationMessageConstants extends CommonMessageConstants
 	public static String getCameraLookatLonNameKey() { return "animator.animation.camera.lookat.lon.name"; }
 	public static String getCameraLookatZoomNameKey() { return "animator.animation.camera.lookat.zoom.name"; }
 	public static String getCameraRollNameKey() { return "animator.animation.camera.roll.name"; }
+	public static String getCameraFieldOfViewNameKey() { return "animator.animation.camera.fieldofview.name"; }
 	public static String getCameraFocalLengthNameKey() { return "animator.animation.camera.focal.length.name"; }
 	public static String getCameraEyeSeparationNameKey() { return "animator.animation.camera.eye.separation.name"; }
 	public static String getCameraNearClipNameKey() { return "animator.animation.camera.nearclip.name"; }
@@ -219,4 +221,13 @@ public class AnimationMessageConstants extends CommonMessageConstants
 	public static String getSunPositionLongitudeParameterNameKey() { return "animator.sunposition.longitude.name"; }
 	public static String getSunPositionLatitudeParameterNameKey() { return "animator.sunposition.latitude.name"; }
 	public static String getSunPositionTimeParameterNameKey() { return "animator.sunposition.time.name"; }
+	public static String getAddHeadLabelKey() { return "animator.gui.menu.addhead.label"; }
+	public static String getHeadAnimatableNameKey() { return "animator.head.name"; }
+	public static String getHeadRotationXParameterNameKey() { return "animator.head.rotationx.name"; }
+	public static String getHeadRotationYParameterNameKey() { return "animator.head.rotationy.name"; }
+	public static String getHeadRotationZParameterNameKey() { return "animator.head.rotationz.name"; }
+	public static String getHeadRotationWParameterNameKey() { return "animator.head.rotationw.name"; }
+	public static String getHeadPositionXParameterNameKey() { return "animator.head.positionx.name"; }
+	public static String getHeadPositionYParameterNameKey() { return "animator.head.positiony.name"; }
+	public static String getHeadPositionZParameterNameKey() { return "animator.head.positionz.name"; }
 }

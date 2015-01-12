@@ -117,7 +117,6 @@ import au.gov.ga.worldwind.common.util.Icons;
 import au.gov.ga.worldwind.common.util.transform.RegexURLTransform;
 import au.gov.ga.worldwind.common.util.transform.URLTransformer;
 import au.gov.ga.worldwind.common.view.delegate.DelegateOrbitView;
-import au.gov.ga.worldwind.common.view.hmd.oculus.OculusSingleton;
 import au.gov.ga.worldwind.common.view.stereo.StereoViewDelegate;
 import au.gov.ga.worldwind.viewer.components.locallayer.LocalLayerCreator;
 import au.gov.ga.worldwind.viewer.components.sectorsaver.ImageSectorSaver;
@@ -166,6 +165,8 @@ public class Application
 
 	static
 	{
+		System.setProperty("jna.library.path", System.getProperty("java.library.path"));
+
 		if (Configuration.isMacOS())
 		{
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
@@ -195,8 +196,6 @@ public class Application
 		Configuration.setValue(AVKey.RETRIEVAL_SERVICE_CLASS_NAME, ExtendedRetrievalService.class.getName());
 
 		GDALDataHelper.init();
-		//the JRiftLibrary must be loaded before JInput, otherwise the Oculus Rift goes undetected:
-		OculusSingleton.getInstance();
 
 		OrbitInputProviderManager.getInstance().addProvider(new HydraOrbitInputProvider());
 		OrbitInputProviderManager.getInstance().addProvider(new SpaceMouseInputProvider());
@@ -397,6 +396,7 @@ public class Application
 	private BasicAction wmsBrowserAction;
 
 	private WmsBrowser wmsBrowser;
+	private final List<QuitListener> quitListeners = new ArrayList<QuitListener>();
 
 	private Application(Theme theme, boolean showSplashScreen, boolean useNewt)
 	{
@@ -1129,7 +1129,7 @@ public class Application
 			this.fullscreen = fullscreen;
 
 			wwdCanvas.getParent().remove(wwdCanvas); //have to explicitly remove, see http://bugs.java.com/view_bug.do?bug_id=8003398
-			
+
 			if (!fullscreen)
 			{
 				splitPane.setRightComponent(wwdCanvas);
@@ -1499,6 +1499,18 @@ public class Application
 
 	protected void quit(boolean systemExit)
 	{
+		for (QuitListener listener : quitListeners)
+		{
+			if (!listener.shouldQuit())
+			{
+				return;
+			}
+		}
+		for (QuitListener listener : quitListeners)
+		{
+			listener.willQuit();
+		}
+
 		saveSplitLocation();
 		Settings.get().saveThemeProperties(theme);
 		Settings.get().save();
@@ -1513,6 +1525,16 @@ public class Application
 		{
 			System.exit(0);
 		}
+	}
+
+	public void addQuitListener(QuitListener listener)
+	{
+		quitListeners.add(listener);
+	}
+
+	public void removeQuitListener(QuitListener listener)
+	{
+		quitListeners.remove(listener);
 	}
 
 	private void saveSplitLocation()
@@ -1594,5 +1616,12 @@ public class Application
 	public JFrame getFrame()
 	{
 		return frame;
+	}
+
+	public static interface QuitListener
+	{
+		boolean shouldQuit();
+
+		void willQuit();
 	}
 }

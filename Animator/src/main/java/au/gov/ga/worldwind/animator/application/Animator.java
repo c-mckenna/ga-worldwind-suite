@@ -114,6 +114,7 @@ import au.gov.ga.worldwind.animator.animation.RenderParameters;
 import au.gov.ga.worldwind.animator.animation.WorldWindAnimationImpl;
 import au.gov.ga.worldwind.animator.animation.camera.Camera;
 import au.gov.ga.worldwind.animator.animation.camera.CameraImpl;
+import au.gov.ga.worldwind.animator.animation.camera.HeadImpl;
 import au.gov.ga.worldwind.animator.animation.camera.StereoCamera;
 import au.gov.ga.worldwind.animator.animation.camera.StereoCameraImpl;
 import au.gov.ga.worldwind.animator.animation.event.AnimationEvent;
@@ -126,10 +127,10 @@ import au.gov.ga.worldwind.animator.animation.io.XmlAnimationWriter;
 import au.gov.ga.worldwind.animator.animation.layer.AnimatableLayer;
 import au.gov.ga.worldwind.animator.animation.parameter.Parameter;
 import au.gov.ga.worldwind.animator.animation.parameter.ParameterValue;
-import au.gov.ga.worldwind.animator.animation.sun.SunPositionAnimatable;
+import au.gov.ga.worldwind.animator.animation.sun.SunPositionAnimatableImpl;
 import au.gov.ga.worldwind.animator.application.debug.AnimationEventLogger;
-import au.gov.ga.worldwind.animator.application.effects.BuiltInEffects;
 import au.gov.ga.worldwind.animator.application.effects.AnimatableEffect;
+import au.gov.ga.worldwind.animator.application.effects.BuiltInEffects;
 import au.gov.ga.worldwind.animator.application.effects.EffectDialog;
 import au.gov.ga.worldwind.animator.application.effects.EffectFactory;
 import au.gov.ga.worldwind.animator.application.render.AnimationRenderer;
@@ -159,6 +160,7 @@ import au.gov.ga.worldwind.animator.ui.frameslider.FrameSlider;
 import au.gov.ga.worldwind.animator.ui.parametereditor.ParameterEditor;
 import au.gov.ga.worldwind.animator.util.ExaggerationAwareStatusBar;
 import au.gov.ga.worldwind.animator.util.ExceptionLogger;
+import au.gov.ga.worldwind.animator.view.AnimatorView;
 import au.gov.ga.worldwind.animator.view.ClipConfigurableView;
 import au.gov.ga.worldwind.common.render.ExtendedSceneController;
 import au.gov.ga.worldwind.common.ui.FileFilters;
@@ -756,7 +758,7 @@ public class Animator
 		animationBrowserPanel = new AnimationBrowserPanel(getCurrentAnimation());
 		objectPropertiesPanel = new ObjectPropertiesPanel();
 		layerPalettePanel = new LayerPalettePanel(getCurrentAnimation());
-		
+
 		animationBrowserPanel.setWeight(2.0f);
 		objectPropertiesPanel.setWeight(0.0f);
 		layerPalettePanel.setWeight(1.0f);
@@ -864,6 +866,7 @@ public class Animator
 		actionFactory.getShowRuleOfThirdsAction().addToMenu(menu);
 		menu.addSeparator();
 		actionFactory.getShowWireframeAction().addToMenu(menu);
+		actionFactory.getTargetModeAction().addToMenu(menu);
 		menu.addSeparator();
 		actionFactory.getAnimateClippingAction().addToMenu(menu);
 		actionFactory.getStereoCameraAction().addToMenu(menu);
@@ -871,6 +874,7 @@ public class Animator
 		menu.addSeparator();
 		menu.add(actionFactory.getAddEffectAction());
 		menu.add(actionFactory.getAddSunPositionAction());
+		menu.add(actionFactory.getAddHeadAction());
 		menu.addSeparator();
 		menu.add(actionFactory.getClipSectorAction());
 		menu.add(actionFactory.getClearClipAction());
@@ -1878,10 +1882,15 @@ public class Animator
 			JOptionPane.showMessageDialog(frame, e.getLocalizedMessage(), "", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+
 	void addSunPositionAnimatable()
 	{
-		animation.addAnimatableObject(new SunPositionAnimatable(null, animation));
+		animation.addAnimatableObject(new SunPositionAnimatableImpl(null, animation));
+	}
+
+	void addHeadAnimatable()
+	{
+		animation.addAnimatableObject(new HeadImpl(animation));
 	}
 
 	void moveToPreviousFrame()
@@ -2196,6 +2205,11 @@ public class Animator
 	void showWireframe(boolean show)
 	{
 		getCurrentAnimation().getWorldWindow().getModel().setShowWireframeInterior(show);
+	}
+	
+	void targetMode(boolean enable)
+	{
+		((AnimatorView) getCurrentAnimation().getWorldWindow().getView()).setTargetMode(enable);
 	}
 
 	void clipSector()

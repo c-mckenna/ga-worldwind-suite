@@ -16,8 +16,6 @@ import java.util.Calendar;
 import au.gov.ga.worldwind.common.sun.SunPositionService;
 import au.gov.ga.worldwind.common.view.delegate.IDelegateView;
 import au.gov.ga.worldwind.common.view.delegate.IViewDelegate;
-import au.gov.ga.worldwind.common.view.hmd.HMDViewDelegate;
-import au.gov.ga.worldwind.common.view.stereo.IStereoViewDelegate.Eye;
 
 public class TimeLayer extends AbstractLayer
 {
@@ -53,11 +51,11 @@ public class TimeLayer extends AbstractLayer
 		int offset = 0;
 		int hmdEyeOffset = 100;
 		IViewDelegate viewDelegate = ((IDelegateView) dc.getView()).getDelegate();
-		if (viewDelegate instanceof HMDViewDelegate && ((HMDViewDelegate) viewDelegate).isRenderEyes())
+		/*if (viewDelegate instanceof HMDViewDelegate && ((HMDViewDelegate) viewDelegate).isRenderEyes())
 		{
 			Eye eye = ((HMDViewDelegate) viewDelegate).getEye();
 			offset = eye == Eye.LEFT ? hmdEyeOffset : -hmdEyeOffset;
-		}
+		}*/
 
 		Point point = new Point(centerPoint.x - 50 + offset, centerPoint.y + 100);
 		annotation.setScreenPoint(point);

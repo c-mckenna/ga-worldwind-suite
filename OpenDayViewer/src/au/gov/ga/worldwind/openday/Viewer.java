@@ -34,8 +34,7 @@ import au.gov.ga.worldwind.common.terrain.ElevationModelFactory;
 import au.gov.ga.worldwind.common.terrain.WireframeRectangularTessellator;
 import au.gov.ga.worldwind.common.util.AVKeyMore;
 import au.gov.ga.worldwind.common.util.GDALDataHelper;
-import au.gov.ga.worldwind.common.view.hmd.oculus.OculusSingleton;
-import au.gov.ga.worldwind.common.view.hmd.oculus.OculusViewDelegate;
+import au.gov.ga.worldwind.common.view.oculus.RiftViewDistortionDelegate;
 import au.gov.ga.worldwind.common.view.target.ITargetView;
 
 public class Viewer
@@ -44,6 +43,8 @@ public class Viewer
 	{
 		//System.setProperty("http.proxyHost", "proxy.agso.gov.au");
 		//System.setProperty("http.proxyPort", "8080");
+		
+		System.setProperty("jna.library.path", System.getProperty("java.library.path"));
 
 		if (Configuration.isMacOS())
 		{
@@ -70,7 +71,7 @@ public class Viewer
 		Configuration.setValue(AVKey.LAYER_FACTORY, LayerFactory.class.getName());
 		Configuration.setValue(AVKey.ELEVATION_MODEL_FACTORY, ElevationModelFactory.class.getName());
 		Configuration.setValue(AVKey.VIEW_CLASS_NAME, FlyOrbitView.class.getName());
-		Configuration.setValue(AVKeyMore.DELEGATE_VIEW_DELEGATE_CLASS_NAME, OculusViewDelegate.class.getName());
+		Configuration.setValue(AVKeyMore.DELEGATE_VIEW_DELEGATE_CLASS_NAME, RiftViewDistortionDelegate.class.getName());
 		Configuration.setValue(AVKey.VIEW_INPUT_HANDLER_CLASS_NAME, ProviderOrbitViewInputHandler.class.getName());
 		Configuration.setValue(AVKey.RETRIEVAL_SERVICE_CLASS_NAME, ExtendedRetrievalService.class.getName());
 		Configuration.setValue(AVKey.SCENE_CONTROLLER_CLASS_NAME, ExtendedSceneController.class.getName());
@@ -87,7 +88,7 @@ public class Viewer
 
 		GDALDataHelper.init();
 		//the JRiftLibrary must be loaded before JInput, otherwise the Oculus Rift goes undetected:
-		OculusSingleton.getInstance();
+		//OculusSingleton.getInstance();
 
 		OrbitInputProviderManager.getInstance().addProvider(new HydraFlyInputProvider());
 	}
