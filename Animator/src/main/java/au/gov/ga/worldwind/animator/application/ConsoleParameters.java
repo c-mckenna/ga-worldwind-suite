@@ -47,4 +47,7 @@ public class ConsoleParameters
 
 	@Parameter(names = { "-?", "-help" }, description = "Print these command line usage instructions.")
 	public boolean showUsage = false;
+
+	@Parameter(names = { "-f", "-format" }, description = "Rendering format of the animation", required = false)
+	public String renderFormat = null;
 }
