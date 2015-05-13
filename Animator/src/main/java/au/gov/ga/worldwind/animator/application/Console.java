@@ -38,6 +38,7 @@ import au.gov.ga.worldwind.animator.animation.io.XmlAnimationReader;
 import au.gov.ga.worldwind.animator.application.render.AnimationRenderer;
 import au.gov.ga.worldwind.animator.application.settings.Settings;
 import au.gov.ga.worldwind.animator.view.AnimatorView;
+import au.gov.ga.worldwind.common.util.NativeLibraries;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -51,6 +52,7 @@ public class Console
 {
 	public static void main(String[] args)
 	{
+		NativeLibraries.init();
 		ConsoleParameters parameters = handleCommandLineArguments(args);
 		if (parameters == null)
 		{
