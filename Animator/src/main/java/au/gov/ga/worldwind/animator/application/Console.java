@@ -25,6 +25,7 @@ import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.view.orbit.OrbitView;
 
 import java.awt.Dimension;
+import java.awt.print.Paper;
 import java.io.File;
 
 import javax.media.opengl.GLAutoDrawable;
@@ -121,6 +122,10 @@ public class Console
 						(int) Math.round(parameters.width / aspectRatio);
 				renderParams.setImageDimension(new Dimension(width, height));
 				renderParams.setImageScalePercent(100);
+			}
+			if (parameters.renderFormat!= null)
+			{
+				renderParams.setRenderExtension(parameters.renderFormat);
 			}
 
 			GLDrawableFactory factory = GLDrawableFactory.getFactory(GLProfile.get(GLProfile.GL2));

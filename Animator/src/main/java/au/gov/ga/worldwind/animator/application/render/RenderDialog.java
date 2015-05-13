@@ -40,6 +40,7 @@ import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -104,11 +105,13 @@ public class RenderDialog extends JDialog implements ChangeOfAnimationListener
 	
 	private JPanel destinationPane;
 	private JTextField destinationField;
+	private JComboBox<String> formatPicker;
+	
 
 	private int response = JOptionPane.CANCEL_OPTION;
 	
 	private static final int DIALOG_WIDTH = 300;
-	private static final int DIALOG_HEIGHT = 390;
+	private static final int DIALOG_HEIGHT = 410;
 	
 	public RenderDialog(Animator targetApplication, Frame owner)
 	{
@@ -538,6 +541,13 @@ public class RenderDialog extends JDialog implements ChangeOfAnimationListener
 		
 		outputExampleLabel = new JLabel();
 		
+		
+		JLabel formatLabel = new JLabel("Format");
+		formatPicker =  new JComboBox<String>(new String[] {"tga","png"});
+		formatPicker.setMinimumSize(new Dimension(150,10));
+		
+		
+		
 		Component hGlue = Box.createHorizontalGlue();
 		
 		layout.setAutoCreateGaps(true);
@@ -550,6 +560,11 @@ public class RenderDialog extends JDialog implements ChangeOfAnimationListener
 					.addComponent(destinationField)
 					.addComponent(browseButton)
 					.addComponent(hGlue)
+				).addGroup(
+					layout.createSequentialGroup()
+					.addComponent(formatLabel)
+					.addComponent(formatPicker)
+					.addComponent(hGlue)
 				)
 				.addComponent(outputExampleLabel)
 		);
@@ -560,6 +575,11 @@ public class RenderDialog extends JDialog implements ChangeOfAnimationListener
 					.addComponent(destinationLabel)
 					.addComponent(destinationField)
 					.addComponent(browseButton)
+					.addComponent(hGlue)
+				).addGroup(
+					layout.createParallelGroup()
+					.addComponent(formatLabel)
+					.addComponent(formatPicker)
 					.addComponent(hGlue)
 				)
 				.addComponent(outputExampleLabel)
@@ -662,6 +682,7 @@ public class RenderDialog extends JDialog implements ChangeOfAnimationListener
 				{
 					destinationField.setText(renderParameters.getRenderDestination().getAbsolutePath());
 				}
+				formatPicker.setSelectedItem(renderParameters.getRenderExtension());
 				frameStartField.setValue(renderParameters.getStartFrame() == null ? 0 : renderParameters.getStartFrame());
 				frameEndField.setValue(renderParameters.getEndFrame() == null ? currentAnimation.getLastFrame() : renderParameters.getEndFrame());
 				updateRenderDimensions();
@@ -691,6 +712,7 @@ public class RenderDialog extends JDialog implements ChangeOfAnimationListener
 			String filename = FileUtil.stripSequenceNumber(FileUtil.stripExtension(destinationField.getText()));
 			renderParameters.setRenderDestination(new File(filename));
 		}
+		renderParameters.setRenderExtension(formatPicker.getSelectedItem().toString());
 		
 		renderParameters.setStartFrame(Math.max(frameStartField.getValue(), 0));
 		renderParameters.setEndFrame(Math.min(frameEndField.getValue(), currentAnimation.getLastFrame()));

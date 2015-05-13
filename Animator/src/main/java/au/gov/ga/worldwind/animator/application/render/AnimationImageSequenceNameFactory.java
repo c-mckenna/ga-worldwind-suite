@@ -16,8 +16,14 @@
 package au.gov.ga.worldwind.animator.application.render;
 
 import java.io.File;
+import java.util.Iterator;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
 
 import au.gov.ga.worldwind.animator.animation.Animation;
+import au.gov.ga.worldwind.animator.animation.RenderParameters;
+import au.gov.ga.worldwind.animator.animation.WorldWindAnimationImpl;
 import au.gov.ga.worldwind.animator.util.FileUtil;
 import au.gov.ga.worldwind.common.util.Util;
 import au.gov.ga.worldwind.common.util.Validate;
@@ -32,10 +38,13 @@ public class AnimationImageSequenceNameFactory
 {
 	private static final String DEFAULT_FRAME_NAME = "frame";
 
-	private AnimationImageSequenceNameFactory(){}
-	
+	private AnimationImageSequenceNameFactory()
+	{
+	}
+
 	/**
-	 * Create an image sequence file name for the specified frame of the provided animation.
+	 * Create an image sequence file name for the specified frame of the
+	 * provided animation.
 	 * <p/>
 	 * Of the form <code>[frameName][padded sequence number].tga</code>
 	 * <p/>
@@ -43,11 +52,19 @@ public class AnimationImageSequenceNameFactory
 	 */
 	public static String createImageSequenceFileName(Animation animation, int frame, String frameName)
 	{
-		return createImageSequenceName(animation, frame, frameName) + ".tga";
+		String renderFormat = RenderParameters.DEFAULT_RENDER_EXTENSION;
+		if (animation instanceof WorldWindAnimationImpl)
+		{
+			String chosenExt = ((WorldWindAnimationImpl) animation).getRenderParameters().getRenderExtension();
+			renderFormat = chosenExt;
+		}
+
+		return createImageSequenceName(animation, frame, frameName) + "." + renderFormat;
 	}
-	
+
 	/**
-	 * Create an image sequence name for the specified frame of the provided animation.
+	 * Create an image sequence name for the specified frame of the provided
+	 * animation.
 	 * <p/>
 	 * Of the form <code>[frameName][padded sequence number]</code>
 	 * <p/>
@@ -56,30 +73,32 @@ public class AnimationImageSequenceNameFactory
 	public static String createImageSequenceName(Animation animation, int frame, String frameName)
 	{
 		Validate.notNull(animation, "An animation is required");
-		return createImageSequenceName(frame, 
-									   Util.isBlank(frameName) ? DEFAULT_FRAME_NAME : frameName, 
-									   String.valueOf(animation.getFrameCount()).length());
+		return createImageSequenceName(frame, Util.isBlank(frameName) ? DEFAULT_FRAME_NAME : frameName,
+				String.valueOf(animation.getFrameCount()).length());
 	}
-	
+
 	/**
-	 * Create an image sequence file for the specified animation in the specified output directory.
+	 * Create an image sequence file for the specified animation in the
+	 * specified output directory.
 	 */
 	public static File createImageSequenceFile(Animation animation, int frame, String frameName, File outputDir)
 	{
 		return new File(outputDir, createImageSequenceFileName(animation, frame, frameName));
 	}
-	
+
 	/**
-	 * Create an image sequence file for the specified stereo animation output in the specified output directory.
+	 * Create an image sequence file for the specified stereo animation output
+	 * in the specified output directory.
 	 */
-	public static File createStereoImageSequenceFile(Animation animation, int frame, String frameName, File outputDir, Eye eye)
+	public static File createStereoImageSequenceFile(Animation animation, int frame, String frameName, File outputDir,
+			Eye eye)
 	{
 		String eyeString = eye == Eye.LEFT ? "left" : "right";
 		File dir = new File(outputDir, frameName + "_" + eyeString);
-		
+
 		return new File(dir, createImageSequenceFileName(animation, frame, frameName));
 	}
-	
+
 	private static String createImageSequenceName(int sequenceNumber, String prefix, int padTo)
 	{
 		return prefix + FileUtil.paddedInt(sequenceNumber, padTo);
