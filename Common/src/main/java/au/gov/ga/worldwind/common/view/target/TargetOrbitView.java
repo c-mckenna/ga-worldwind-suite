@@ -212,30 +212,28 @@ public class TargetOrbitView extends BaseOrbitView implements ITargetView
 		}
 	}
 
-//	@Override
-//	protected double computeNearClipDistance()
-//	{
-//		double near = Math.max(super.computeNearClipDistance(), MINIMUM_NEAR_DISTANCE);
-//		if (prioritizeFarClipping)
-//		{
-//			
-//			double far = computeFarClipDistance();
-//			return Math.max(near, far / MAXIMUM_FAR_NEAR_RATIO);
-//		}
-//		return near;
-//	}
-//
-//	@Override
-//	protected double computeFarClipDistance()
-//	{
-//		double elevation = getCurrentEyePosition().elevation;
-//		double far = elevation + globe.getDiameter();
-//		if (!prioritizeFarClipping)
-//		{
-//			return super.computeFarClipDistance();
-////			double near = computeNearClipDistance();
-////			return Math.min(far, near * MAXIMUM_NEAR_FAR_RATIO);
-//		}
-//		return far;
-//	}
+	@Override
+	protected double computeNearClipDistance()
+	{
+		double near = Math.max(super.computeNearClipDistance(), MINIMUM_NEAR_DISTANCE);
+		if (prioritizeFarClipping)
+		{
+			double far = computeFarClipDistance();
+			return Math.max(near, far / MAXIMUM_FAR_NEAR_RATIO);
+		}
+		return near;
+	}
+
+	@Override
+	protected double computeFarClipDistance()
+	{
+		double elevation = getCurrentEyePosition().elevation;
+		double far = elevation + globe.getDiameter();
+		if (!prioritizeFarClipping)
+		{
+			double near = computeNearClipDistance();
+			return Math.min(far, near * MAXIMUM_NEAR_FAR_RATIO);
+		}
+		return far;
+	}
 }
