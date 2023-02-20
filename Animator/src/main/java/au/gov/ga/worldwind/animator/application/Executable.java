@@ -15,7 +15,6 @@
  ******************************************************************************/
 package au.gov.ga.worldwind.animator.application;
 
-import gov.nasa.worldwind.Configuration;
 import gov.nasa.worldwind.util.Logging;
 
 import java.io.ByteArrayOutputStream;
@@ -35,9 +34,6 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-
-import au.gov.ga.worldwind.common.util.DirectDraw;
-import au.gov.ga.worldwind.common.util.NativeLibraries;
 
 /**
  * Main class that runs the {@link Animator} as an executable. This class saves
@@ -78,7 +74,7 @@ public class Executable
 
 
 		//setup the libraries
-		NativeLibraries.init();
+		GDALLoader.init();
 
 		//start the animator
 		System.out.println("Starting Animator");
