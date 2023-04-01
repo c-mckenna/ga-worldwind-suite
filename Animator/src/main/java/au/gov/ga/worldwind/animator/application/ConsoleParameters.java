@@ -45,6 +45,15 @@ public class ConsoleParameters
 	@Parameter(names = { "-h", "-height" }, description = "Override the height of the rendered frames.", required = false)
 	public Integer height = null;
 
+	@Parameter(names = { "-t", "-tiled" }, description = "Render the scene using tiles.", required = false)
+	public boolean tiled = false;
+
+	@Parameter(names = { "-tw", "-tile_width" }, description = "Override the width of the rendered tile.", required = false)
+	public Integer tileWidth = 5120;
+
+	@Parameter(names = { "-th", "-tile_height" }, description = "Override the height of the rendered tile.", required = false)
+	public Integer tileHeight = 5120;
+
 	@Parameter(names = { "-?", "-help" }, description = "Print these command line usage instructions.")
 	public boolean showUsage = false;
 

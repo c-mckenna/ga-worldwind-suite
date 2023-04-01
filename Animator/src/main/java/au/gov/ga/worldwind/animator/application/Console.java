@@ -53,7 +53,7 @@ public class Console
 {
 	public static void main(String[] args)
 	{
-		NativeLibraries.init();
+		GDALLoader.init();
 		ConsoleParameters parameters = handleCommandLineArguments(args);
 		if (parameters == null)
 		{
@@ -87,7 +87,7 @@ public class Console
 			File output = new File(parameters.outputFile);
 			XmlAnimationReader animationReader = new XmlAnimationReader();
 			Animation animation = animationReader.readAnimation(input, wwd);
-			AnimationRenderer renderer = new ConsoleOffscreenRenderer(wwd);
+			AnimationRenderer renderer = parameters.tiled ? new TiledConsoleOffscreenRenderer(wwd, new Dimension(parameters.tileWidth, parameters.tileHeight)) : new ConsoleOffscreenRenderer(wwd);
 
 			((AnimatorSceneController) wwd.getSceneController()).setAnimation(animation);
 			model.getGlobe().setElevationModel(animation.getRootElevationModel());
@@ -128,10 +128,13 @@ public class Console
 				renderParams.setRenderExtension(parameters.renderFormat);
 			}
 
+			int offscreenWidth = parameters.tiled ? parameters.tileWidth : renderParams.getImageDimension().width;
+			int offscreenHeight = parameters.tiled ? parameters.tileHeight : renderParams.getImageDimension().height;
+
 			GLDrawableFactory factory = GLDrawableFactory.getFactory(GLProfile.get(GLProfile.GL2));
 			GLOffscreenAutoDrawable drawable =
 					factory.createOffscreenAutoDrawable(null, AnimatorConfiguration.getGLCapabilities(), null,
-							renderParams.getImageDimension().width, renderParams.getImageDimension().height);
+							offscreenWidth, offscreenHeight);
 			drawable.display();
 			wwd.initDrawable(drawable);
 

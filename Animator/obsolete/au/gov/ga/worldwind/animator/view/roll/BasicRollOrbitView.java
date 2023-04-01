@@ -117,8 +117,6 @@ public class BasicRollOrbitView extends BasicOrbitView implements RollOrbitView
 		// Compute the current viewport dimensions.
 		double viewportWidth = this.viewport.getWidth() <= 0.0 ? 1.0 : this.viewport.getWidth();
 		double viewportHeight = this.viewport.getHeight() <= 0.0 ? 1.0 : this.viewport.getHeight();
-		// Compute the current projection matrix.
-		this.projection = Matrix.fromPerspective(this.fieldOfView, viewportWidth, viewportHeight, this.nearClipDistance, this.farClipDistance);
 		// Compute the current frustum.
 		this.frustum = Frustum.fromPerspective(this.fieldOfView, (int) viewportWidth, (int) viewportHeight, this.nearClipDistance, this.farClipDistance);
 

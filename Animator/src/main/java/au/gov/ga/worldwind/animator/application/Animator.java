@@ -68,6 +68,7 @@ import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.layers.CrosshairLayer;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
+import gov.nasa.worldwind.util.Logging;
 import gov.nasa.worldwind.view.orbit.OrbitView;
 
 import java.awt.BorderLayout;
@@ -398,6 +399,7 @@ public class Animator
 	private void initialiseWorldWindow()
 	{
 		wwd = new WorldWindowGLCanvas(null, null, AnimatorConfiguration.getGLCapabilities(), null);
+
 		model = new BasicModel();
 		wwd.setModel(model);
 		((AWTInputHandler) wwd.getInputHandler()).setSmoothViewChanges(false);

@@ -57,7 +57,7 @@
 				<exclude name="**/*.java" />
 			</fileset>
 		</copy>
-		<javac source="1.6" target="1.6" destdir="${build_dir}" classpathref="classpath" listfiles="no" fork="true" debug="${javac_debug}" includeantruntime="no">
+		<javac source="1.8" target="1.8" destdir="${build_dir}" classpathref="classpath" listfiles="no" fork="true" debug="${javac_debug}" includeantruntime="no" encoding="iso-8859-1">
 			<src path="${src_dir}" />
 		</javac>
 	</target>
@@ -74,7 +74,7 @@
 				<exclude name="**/*.java" />
 			</fileset>
 		</copy>
-		<javac source="1.6" target="1.6" destdir="${test_build_dir}" classpathref="test_classpath" listfiles="no" fork="true" debug="${javac_debug}" includeantruntime="no">
+		<javac source="1.8" target="1.8" destdir="${test_build_dir}" classpathref="test_classpath" listfiles="no" fork="true" debug="${javac_debug}" includeantruntime="no" encoding="iso-8859-1">
 			<src path="${test_src_dir}" />
 		</javac>
 	</target>

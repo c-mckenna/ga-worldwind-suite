@@ -106,12 +106,12 @@ public class RenderDialog extends JDialog implements ChangeOfAnimationListener
 	private JPanel destinationPane;
 	private JTextField destinationField;
 	private JComboBox<String> formatPicker;
-	
+
 
 	private int response = JOptionPane.CANCEL_OPTION;
 	
-	private static final int DIALOG_WIDTH = 300;
-	private static final int DIALOG_HEIGHT = 410;
+	private static final int DIALOG_WIDTH = 400;
+	private static final int DIALOG_HEIGHT = 590;
 	
 	public RenderDialog(Animator targetApplication, Frame owner)
 	{
@@ -541,13 +541,13 @@ public class RenderDialog extends JDialog implements ChangeOfAnimationListener
 		
 		outputExampleLabel = new JLabel();
 		
-		
+
 		JLabel formatLabel = new JLabel("Format");
 		formatPicker =  new JComboBox<String>(new String[] {"tga","png"});
 		formatPicker.setMinimumSize(new Dimension(150,10));
-		
-		
-		
+
+
+
 		Component hGlue = Box.createHorizontalGlue();
 		
 		layout.setAutoCreateGaps(true);
@@ -713,7 +713,7 @@ public class RenderDialog extends JDialog implements ChangeOfAnimationListener
 			renderParameters.setRenderDestination(new File(filename));
 		}
 		renderParameters.setRenderExtension(formatPicker.getSelectedItem().toString());
-		
+
 		renderParameters.setStartFrame(Math.max(frameStartField.getValue(), 0));
 		renderParameters.setEndFrame(Math.min(frameEndField.getValue(), currentAnimation.getLastFrame()));
 	}

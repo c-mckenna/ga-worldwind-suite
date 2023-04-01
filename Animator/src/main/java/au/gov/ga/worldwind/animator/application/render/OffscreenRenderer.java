@@ -15,24 +15,25 @@
  ******************************************************************************/
 package au.gov.ga.worldwind.animator.application.render;
 
-import gov.nasa.worldwind.WorldWindow;
-import gov.nasa.worldwind.render.DrawContext;
-import gov.nasa.worldwind.view.orbit.OrbitView;
-
-import java.awt.Dimension;
-import java.io.File;
-
-import javax.media.opengl.GL2;
-
 import au.gov.ga.worldwind.animator.animation.Animation;
 import au.gov.ga.worldwind.animator.animation.RenderParameters;
 import au.gov.ga.worldwind.animator.application.Animator;
 import au.gov.ga.worldwind.animator.application.AnimatorSceneController;
 import au.gov.ga.worldwind.animator.application.ScreenshotPaintTask;
 import au.gov.ga.worldwind.animator.layers.immediate.ImmediateMode;
+import au.gov.ga.worldwind.animator.view.TileDelegate;
 import au.gov.ga.worldwind.common.render.FrameBuffer;
 import au.gov.ga.worldwind.common.render.PaintTask;
 import au.gov.ga.worldwind.common.util.Validate;
+import au.gov.ga.worldwind.common.view.delegate.IDelegateView;
+import gov.nasa.worldwind.WorldWindow;
+import gov.nasa.worldwind.render.DrawContext;
+import gov.nasa.worldwind.util.Logging;
+import gov.nasa.worldwind.view.orbit.OrbitView;
+
+import javax.media.opengl.GL2;
+import java.awt.*;
+import java.io.File;
 
 /**
  * An {@link AnimationRenderer} that renders each frame of the animation to an
@@ -53,9 +54,9 @@ public class OffscreenRenderer extends AnimationRendererBase
 	private double detailHintBackup;
 	private boolean wasImmediate;
 
-	private PaintTask preRenderTask;
-	private PaintTask prePostRenderTask;
-	private PaintTask postRenderTask;
+	protected PaintTask preRenderTask;
+	protected PaintTask prePostRenderTask;
+	protected PaintTask postRenderTask;
 
 	public OffscreenRenderer(WorldWindow wwd, Animator targetApplication)
 	{
@@ -80,7 +81,6 @@ public class OffscreenRenderer extends AnimationRendererBase
 		setupForRendering(renderParams.getDetailLevel());
 
 		final Dimension renderDimensions = renderParams.getRenderDimension();
-		//final Dimension viewDimensions = renderParams.getImageDimension();
 
 		animatorSceneController.setRenderDimensions(renderDimensions);
 		animatorSceneController.addPrePaintTask(new PaintTask()
